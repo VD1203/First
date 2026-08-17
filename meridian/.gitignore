@@ -1,0 +1,4 @@
+# npm is only used to fetch the libraries; the five files the page actually
+# loads are committed under vendor/, so the site needs no install and no build.
+node_modules/
+.DS_Store

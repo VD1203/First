@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Meridian — the AI wealth manager that defends every trade before it runs</title>
+<meta name="description" content="Meridian reads each household's holdings, mandate and tax lots, drafts the overnight rebalance, and shows its reasoning line by line. Nothing reaches a custodian until an advisor approves it.">
+<meta name="color-scheme" content="light">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="./css/site.css">
+
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+<script>
+  document.documentElement.classList.remove('no-js');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('no-motion');
+  }
+</script>
+</head>
+
+<body class="is-loading">
+
+<!-- ══ preloader ══════════════════════════════════════════ -->
+<div class="pre" data-preloader aria-hidden="true">
+  <div class="pre__inner">
+    <div class="pre__row">
+      <span class="pre__mark">Meridian</span>
+      <span class="pre__pct" data-preloader-pct>000</span>
+    </div>
+    <div class="pre__track"><div class="pre__bar" data-preloader-bar></div></div>
+  </div>
+</div>
+
+<a href="#mechanism" class="sr">Skip to how it works</a>
+
+<!-- ══ nav ════════════════════════════════════════════════ -->
+<nav class="nav" data-nav>
+  <div class="nav__in">
+    <a class="nav__mark" href="#top">
+      <svg class="nav__glyph" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M1 8h14M8 1c2.6 2.2 2.6 11.8 0 14M8 1C5.4 3.2 5.4 12.8 8 15" stroke="currentColor" stroke-width="1.1" opacity=".5"/>
+        <circle cx="8" cy="8" r="2" fill="#2B49DE"/>
+      </svg>
+      Meridian
+    </a>
+    <div class="nav__links">
+      <a href="#mechanism">Mechanism</a>
+      <a href="#coverage">Coverage</a>
+      <a href="#platform">Platform</a>
+      <a href="#proof">Proof</a>
+    </div>
+    <div class="nav__cta">
+      <a class="btn btn--solid" href="#demo">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+
+<!-- ══ hero — the product itself is the proof ═════════════ -->
+<header class="hero">
+  <div class="hero__bg" data-parallax-layer data-speed="0.12" aria-hidden="true"></div>
+
+  <div class="wrap hero__in">
+    <div class="hero__top">
+      <div>
+        <p class="hero__eyebrow ul"><i class="hero__dot"></i>AI wealth management · for RIAs and family offices</p>
+        <h1 data-split-reveal>Rebalanced overnight. <span class="serif">Defended</span> before it runs.</h1>
+      </div>
+
+      <div class="hero__aside" data-reveal-group>
+        <p class="hero__sub" data-reveal>
+          Meridian reads every household's holdings, mandate and tax lots, drafts the
+          rebalance while the market is shut, and shows the reasoning line by line.
+          Nothing reaches a custodian until an advisor approves it.
+        </p>
+        <div class="hero__acts" data-reveal>
+          <a class="btn btn--solid" href="#demo">Book a demo <svg class="btn__arrow" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="btn btn--ghost" href="#mechanism">See the mechanism</a>
+        </div>
+        <div class="hero__meta ul" data-reveal>
+          <span><i></i>Advisor-in-the-loop by design</span>
+          <span><i></i>Custodian-agnostic</span>
+          <span><i></i>Lot-level tax accounting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- the main screen, built as live DOM -->
+  <div class="wrap stagewrap">
+    <section class="console" data-console data-state="draft" aria-label="Meridian rebalance review — sample workflow">
+
+      <div class="console__bar">
+        <div class="console__bar-l">
+          <span class="console__app">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.6" stroke="currentColor" stroke-width="1.3"/>
+              <circle cx="8" cy="8" r="2" fill="#2B49DE"/>
+            </svg>
+            Meridian
+          </span>
+          <span class="console__path">/ households / whitfield-family-trust / proposals / 2471</span>
+        </div>
+        <div class="console__bar-r">
+          <span class="chip chip--live">Custody synced 04:02 ET</span>
+          <span class="chip chip--sample">Sample workflow<span class="chip__more"> · synthetic data</span></span>
+        </div>
+      </div>
+
+      <div class="console__body">
+
+        <!-- rail -->
+        <aside class="rail" aria-label="Product navigation">
+          <span class="rail__label ul">Workspace</span>
+          <button class="rail__item" type="button" tabindex="-1">
+            <svg class="rail__ico" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1.5 5.5 7 1.5l5.5 4v7h-11v-7Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            Households <span class="rail__count">1,240</span>
+          </button>
+          <button class="rail__item" type="button" tabindex="-1" aria-current="page">
+            <svg class="rail__ico" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 1.5h9v11h-9zM4.5 4.5h5M4.5 7h5M4.5 9.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Proposals <span class="rail__count">18</span>
+          </button>
+          <button class="rail__item" type="button" tabindex="-1">
+            <svg class="rail__ico" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1.5 10.5 5 6l3 3 4.5-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Drift monitor <span class="rail__count">7</span>
+          </button>
+          <button class="rail__item" type="button" tabindex="-1">
+            <svg class="rail__ico" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 1.5h6l2 2v9h-10v-9l2-2ZM5 6.5h4M5 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Tax lots
+          </button>
+          <button class="rail__item" type="button" tabindex="-1">
+            <svg class="rail__ico" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 12V7M5.7 12V2.5M9.3 12V5.5M13 12V4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Reports
+          </button>
+          <button class="rail__item" type="button" tabindex="-1">
+            <svg class="rail__ico" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1.5 12 3.5v4c0 3-2.2 4.6-5 5.5-2.8-.9-5-2.5-5-5.5v-4L7 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            Audit ledger
+          </button>
+          <div class="rail__foot">
+            <div class="rail__user">
+              <span class="rail__avatar" aria-hidden="true">DW</span>
+              <span class="rail__who"><b>D. Whitfield-Ross</b><span>CIO · approval rights</span></span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- main pane -->
+        <div class="pane">
+          <div class="pane__head">
+            <div class="pane__title">
+              <h3>Whitfield Family Trust</h3>
+              <span class="pane__aum">$18.42M</span>
+            </div>
+            <div class="pane__tags">
+              <span class="chip">Balanced · tax-aware</span>
+              <span class="chip">IPS v4.2</span>
+              <span class="chip">ESG screened</span>
+              <span class="chip">4 accounts · 2 taxable</span>
+            </div>
+          </div>
+
+          <div class="pane__strip">
+            <div class="pane__strip-l">
+              <span class="ul">Proposal 2471</span>
+              <span class="drift">
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1.5 11 10.5H1L6 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M6 5v2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <b>2 sleeves outside band</b>
+              </span>
+            </div>
+            <span class="ul">Built 04:12 ET · 3m 41s</span>
+          </div>
+
+          <table class="tbl" role="grid" data-sleeves aria-label="Sleeves by drift against mandate band">
+            <thead>
+              <tr>
+                <th scope="col">Sleeve</th>
+                <th scope="col">Target</th>
+                <th scope="col">Current</th>
+                <th scope="col">Drift</th>
+                <th scope="col">Band</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody data-sleeve-rows><!-- rendered by js/console.js --></tbody>
+          </table>
+
+          <div class="pane__foot">
+            <span class="ul" data-foot-left>Net trade value $810K · 3 buys, 1 sell</span>
+            <span class="ul" data-foot-right>Now 2 outside band → 0 after the trade</span>
+          </div>
+        </div>
+
+        <!-- rationale panel -->
+        <aside class="side" aria-label="Reasoning for the selected sleeve">
+          <div class="side__head">
+            <span class="ul">Why this trade</span>
+            <h4 data-why-title>US Equity — trim 4.4%</h4>
+          </div>
+
+          <div class="side__body" data-why-body aria-live="polite">
+            <ul class="why" data-why-list></ul>
+
+            <div class="lots" data-why-lots>
+              <div class="lots__h">
+                <span class="ul">Lots selected</span>
+                <span class="ul">Realised</span>
+              </div>
+              <div data-why-lot-rows></div>
+            </div>
+
+            <div>
+              <div class="stat"><span>Est. realised gain</span><b data-why-gain>$161.0K</b></div>
+              <div class="stat"><span>Harvested loss applied</span><b data-why-loss>−$18.0K</b></div>
+              <div class="stat"><span>Est. tax cost</span><b data-why-tax>$38.3K</b></div>
+              <div class="stat"><span>Wash-sale check</span><b data-why-wash>Clear</b></div>
+            </div>
+
+            <div class="side__edit" data-edit>
+              <label for="edit-size">Trade size</label>
+              <input id="edit-size" type="number" min="0" max="100" step="5" value="100" data-edit-input>
+              <span class="ul">%</span>
+            </div>
+          </div>
+
+          <div class="side__foot">
+            <div class="side__acts">
+              <button class="btn btn--solid" type="button" data-act="approve">Approve</button>
+              <button class="btn btn--ghost" type="button" data-act="edit">Edit</button>
+              <button class="btn btn--ghost" type="button" data-act="reject">Reject</button>
+            </div>
+            <span class="side__state"><i></i><span data-state-label>Draft · awaiting advisor</span></span>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <div class="stage__cap">
+      <p>
+        A working mock of the review screen — every state above is real DOM you can
+        click and tab through. The household, holdings and figures are synthetic.
+      </p>
+      <button class="replay" type="button" data-replay>
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M10.5 6a4.5 4.5 0 1 1-1.4-3.3M10.5 1v2.6H7.9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reset workflow
+      </button>
+    </div>
+  </div>
+
+  <div class="band" aria-hidden="true">
+    <div class="band__in" data-marquee>
+      <div class="band__set">
+        <span class="band__i"><i></i>Positions reconciled nightly</span>
+        <span class="band__i"><i></i>Mandate rules · 42 types</span>
+        <span class="band__i"><i></i>Lot-level tax accounting</span>
+        <span class="band__i"><i></i>Wash-sale window · 61 days</span>
+        <span class="band__i"><i></i>Drift scored every close</span>
+        <span class="band__i"><i></i>Approval ledger · append-only</span>
+        <span class="band__i"><i></i>Custodian-agnostic file out</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ mechanism — pinned, scroll-scrubbed canvas ═════════ -->
+<section class="seq" id="mechanism" data-sequence>
+  <div class="seq__stage" data-seq-stage>
+    <div class="seq__head">
+      <h2 data-split-reveal>Four states between a drifted book and a signed order.</h2>
+      <p class="seq__lede">
+        Scroll to step through them — forward or back. The frame is drawn live
+        on a canvas, so there is no video and no frame to load.
+      </p>
+    </div>
+
+    <div class="seq__canvaswrap">
+      <canvas class="seq__canvas" data-seq-canvas role="img"
+              aria-label="Diagram of a portfolio moving from reconciled positions to approved orders. The same four states are listed as text below."></canvas>
+    </div>
+
+    <div class="seq__foot">
+      <div class="seq__caps" aria-hidden="true">
+        <div class="seq__cap is-on" data-cap="0"><b>Positions, in from custody</b><span>Every account in the household is reconciled against the custodian's overnight file. Cost basis, lot dates and pending activity arrive with it.</span></div>
+        <div class="seq__cap" data-cap="1"><b>Drift, against the mandate</b><span>Each sleeve is scored against its target and its tolerance band. Two are outside. Five are not, and Meridian leaves them alone.</span></div>
+        <div class="seq__cap" data-cap="2"><b>Orders, with the lots chosen</b><span>The correction is sized, then the lots are picked — highest basis first, harvesting the short-term loss and clearing the wash-sale window.</span></div>
+        <div class="seq__cap" data-cap="3"><b>Approval, then the file</b><span>An advisor approves, edits or rejects. Approved orders leave as a custodian file and every decision lands in an append-only ledger.</span></div>
+      </div>
+      <div class="seq__steps" aria-hidden="true">
+        <span class="seq__step"><i></i></span>
+        <span class="seq__step"><i></i></span>
+        <span class="seq__step"><i></i></span>
+        <span class="seq__step"><i></i></span>
+        <span class="seq__pct" data-seq-pct>00%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- the same four states as text: works with no JS, no motion, or a screen reader -->
+  <div class="seq__text">
+    <div class="chap"><span class="chap__n">01</span><span class="ul">The mechanism, in words</span><span class="chap__line"></span></div>
+    <ol>
+      <li><span class="ul">Read</span><b>Positions, in from custody</b><p>Accounts reconcile against the custodian's overnight file — cost basis, lot dates and pending activity included.</p></li>
+      <li><span class="ul">Measure</span><b>Drift, against the mandate</b><p>Every sleeve is scored against its target and tolerance band. Sleeves inside the band are left alone.</p></li>
+      <li><span class="ul">Draft</span><b>Orders, with the lots chosen</b><p>The correction is sized, then lots are selected highest-basis-first, harvesting losses and clearing wash-sale windows.</p></li>
+      <li><span class="ul">Approve</span><b>Approval, then the file</b><p>An advisor approves, edits or rejects. Only approved orders become a custodian file, and every decision is logged.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══ coverage — cursor spotlight reveal ═════════════════ -->
+<section class="rev dark" id="coverage">
+  <div class="wrap">
+    <div class="chap"><span class="chap__n">02</span><span class="ul">Coverage</span><span class="chap__line"></span></div>
+
+    <div class="rev__head">
+      <h2 data-split-reveal>The whole book, or a single lot.</h2>
+      <p data-reveal>
+        The default view is deliberately quiet — nothing competes for attention
+        until it leaves its band. Move your cursor across the map to bring the
+        quarter's performance up through it.
+      </p>
+    </div>
+
+    <figure class="reveal-hover" data-reveal-hover data-reveal-radius="270">
+      <img class="reveal-hover__image reveal-hover__image--base"
+           src="./assets/exposure-map.svg" alt="Sector exposure map: fifteen sleeves sized by portfolio weight, shown in a neutral greyscale treatment."
+           width="1600" height="1000" decoding="async">
+      <img class="reveal-hover__image reveal-hover__image--overlay"
+           src="./assets/exposure-map.svg" alt="" aria-hidden="true"
+           width="1600" height="1000" decoding="async">
+      <figcaption class="rev__hint" aria-hidden="true">Move to reveal performance</figcaption>
+      <button class="rev__toggle" type="button" data-reveal-toggle aria-pressed="false">Show performance</button>
+    </figure>
+
+    <div class="rev__key">
+      <span><i style="background:#0B6E55"></i>Ahead of benchmark</span>
+      <span><i style="background:#CFCDC4"></i>In line</span>
+      <span><i style="background:#B4432B"></i>Behind</span>
+      <span><i style="background:linear-gradient(90deg,#6B7278,#EEF0F2)"></i>Tile size = portfolio weight</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ platform — sticky card stack ═══════════════════════ -->
+<section class="stack" id="platform">
+  <div class="wrap">
+    <div class="chap"><span class="chap__n">03</span><span class="ul">Platform</span><span class="chap__line"></span></div>
+
+    <div class="stack__head">
+      <h2 data-split-reveal>Four systems, one approval.</h2>
+      <p data-reveal>
+        Meridian is not one model with a chat box in front of it. It is four
+        deterministic systems whose output a language model has to explain — and
+        which an advisor has to sign.
+      </p>
+    </div>
+
+    <div class="stack__list" data-sticky-stack>
+
+      <article class="card" data-stack-card>
+        <div class="card__in">
+          <div class="card__l">
+            <div class="card__n"><b>01</b><hr><span class="ul">Deterministic</span></div>
+            <h3>Your IPS, compiled into checkable rules.</h3>
+            <p>Upload the investment policy statement. Meridian turns each clause into a typed rule with a target, a band and an owner — then flags the clauses it could not parse rather than guessing at them.</p>
+            <div class="card__facts">
+              <span class="chip">42 rule types</span><span class="chip">Versioned</span><span class="chip">Diffable</span>
+            </div>
+          </div>
+          <div class="card__r">
+            <div class="mini">
+              <div class="mini__h"><span>ips-v4.2.rules</span><span>parsed</span></div>
+              <code>sleeve <em>"us_equity"</em> target 32.0 band 2.5</code>
+              <code>sleeve <em>"intl_dev"</em> target 14.0 band 2.0</code>
+              <code>screen <em>exclude</em> ["thermal_coal"]</code>
+              <code>tax <em>lot_method</em> = highest_basis</code>
+            </div>
+            <div class="mini">
+              <div class="mini__h"><span>Unparsed clauses</span><span>2</span></div>
+              <div class="mini__row"><span>§7.1 "reasonable liquidity"</span><b>needs input</b></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-stack-card>
+        <div class="card__in">
+          <div class="card__l">
+            <div class="card__n"><b>02</b><hr><span class="ul">Continuous</span></div>
+            <h3>Drift scored at every close, not every quarter.</h3>
+            <p>Positions reconcile against custody overnight. Each sleeve is scored against its band, and a household only surfaces when something actually breaches — so a quiet book stays quiet.</p>
+            <div class="card__facts">
+              <span class="chip">Nightly 02:00 ET</span><span class="chip">Per household</span><span class="chip">Silent when in band</span>
+            </div>
+          </div>
+          <div class="card__r">
+            <div class="mini">
+              <div class="mini__h"><span>Drift · Whitfield</span><span>2 breached</span></div>
+              <div class="mini__row"><span>US Equity</span><b style="color:#B0781C">+4.4%</b></div>
+              <div class="mini__track"><i style="width:88%;background:#B0781C"></i></div>
+              <div class="mini__row"><span>Emerging Markets</span><b style="color:#B0781C">−1.6%</b></div>
+              <div class="mini__track"><i style="width:64%;background:#B0781C"></i></div>
+              <div class="mini__row"><span>Core Fixed Income</span><b>−1.8%</b></div>
+              <div class="mini__track"><i style="width:45%"></i></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-stack-card>
+        <div class="card__in">
+          <div class="card__l">
+            <div class="card__n"><b>03</b><hr><span class="ul">Lot level</span></div>
+            <h3>The tax bill is part of the decision, not a report afterwards.</h3>
+            <p>Every proposed sale is priced at the lot: holding period, basis, harvestable losses and the 61-day wash-sale window across all accounts in the household — including the spouse's IRA.</p>
+            <div class="card__facts">
+              <span class="chip">Highest-basis-first</span><span class="chip">Cross-account</span><span class="chip">Wash-sale aware</span>
+            </div>
+          </div>
+          <div class="card__r">
+            <div class="mini">
+              <div class="mini__h"><span>Lot ladder · US Equity</span><span>3 of 47</span></div>
+              <div class="mini__row"><span>2019-03-14 · LT</span><b>+$148.0K</b></div>
+              <div class="mini__row"><span>2021-11-02 · LT</span><b>+$31.0K</b></div>
+              <div class="mini__row"><span>2024-08-19 · ST</span><b style="color:#0F7B5F">−$18.0K</b></div>
+            </div>
+            <div class="mini">
+              <div class="mini__h"><span>Tax cost of this proposal</span><span>est.</span></div>
+              <div class="mini__row"><span>Without lot selection</span><b>$52.9K</b></div>
+              <div class="mini__row"><span>As drafted</span><b style="color:#0F7B5F">$38.3K</b></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-stack-card>
+        <div class="card__in">
+          <div class="card__l">
+            <div class="card__n"><b>04</b><hr><span class="ul">Accountable</span></div>
+            <h3>Every order carries a named human on it.</h3>
+            <p>Approvals are append-only: who signed, at which second, against which version of the mandate, and what the model said at the time. Nothing routes to a custodian without it.</p>
+            <div class="card__facts">
+              <span class="chip">Append-only</span><span class="chip">Exportable</span><span class="chip">Reg-ready</span>
+            </div>
+          </div>
+          <div class="card__r">
+            <div class="mini">
+              <div class="mini__h"><span>ledger · proposal 2471</span><span>4 events</span></div>
+              <code>04:12:07 <em>built</em> engine v3.8 · ips v4.2</code>
+              <code>08:41:22 <em>viewed</em> d.whitfield-ross</code>
+              <code>08:44:03 <em>edited</em> size 100% → 85%</code>
+              <code>08:44:19 <em>approved</em> d.whitfield-ross</code>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ reach — particle globe ═════════════════════════════ -->
+<section class="globe dark" id="reach">
+  <div class="globe__glow" aria-hidden="true"></div>
+  <div class="globe__canvaswrap" aria-hidden="true">
+    <canvas class="globe__canvas" data-globe-particles></canvas>
+  </div>
+
+  <div class="wrap globe__in">
+    <span class="ul">04 / Coverage clock</span>
+    <h2 data-split-reveal>Markets don't wait for your Monday.</h2>
+    <p data-reveal>
+      Meridian runs on the market's clock rather than the office's — reconciling
+      overnight, scoring drift at every close, and having the proposal built
+      before the first coffee.
+    </p>
+
+    <div class="globe__stats" data-reveal-group>
+      <div class="globe__stat" data-reveal><b>02:00</b><span>ET nightly reconciliation window</span></div>
+      <div class="globe__stat" data-reveal><b>14</b><span>Exchange calendars tracked</span></div>
+      <div class="globe__stat" data-reveal><b>3m 41s</b><span>Median proposal build per household</span></div>
+      <div class="globe__stat" data-reveal><b>100%</b><span>Orders requiring a named approver</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ proof ══════════════════════════════════════════════ -->
+<section class="proof" id="proof">
+  <div class="wrap">
+    <div class="chap"><span class="chap__n">05</span><span class="ul">Proof</span><span class="chap__line"></span></div>
+
+    <div class="proof__head">
+      <h2 data-split-reveal>What actually changes on the desk.</h2>
+      <p data-reveal>
+        Not "AI-powered returns". The measurable change is how much of a rebalance
+        cycle an advisor has to assemble by hand — and how much of the tax bill
+        survives it.
+      </p>
+    </div>
+
+    <div class="proof__grid" data-reveal-group>
+      <div class="proof__cell" data-reveal><span class="ul">Time</span><b data-count="6.2" data-dec="1">0.0<i>hrs</i></b><p>Advisor time returned each week, per 100 households.</p></div>
+      <div class="proof__cell" data-reveal><span class="ul">Throughput</span><b data-count="3.4" data-dec="1">0.0<i>×</i></b><p>More households reviewed per advisor, per quarter.</p></div>
+      <div class="proof__cell" data-reveal><span class="ul">Tax</span><b data-count="41" data-dec="0">0<i>bps</i></b><p>Median annual tax drag avoided across taxable sleeves.</p></div>
+      <div class="proof__cell" data-reveal><span class="ul">Control</span><b data-count="0" data-dec="0">0</b><p>Orders ever sent without a named human approver.</p></div>
+    </div>
+
+    <figure class="quote" data-reveal>
+      <div class="quote__main">
+        <blockquote>
+          We were never looking for a robot to pick stocks. We wanted back the
+          eleven hours a week we spent proving our own rebalance was defensible.
+          <span class="serif">That</span> is what it returned.
+        </blockquote>
+        <figcaption>
+          <span class="quote__av" aria-hidden="true">DW</span>
+          <span class="quote__who"><b>D. Whitfield-Ross</b><span>Chief Investment Officer, Kestrel Point Advisors · $2.1B AUM</span></span>
+        </figcaption>
+      </div>
+      <div class="quote__side">
+        <div class="qrow"><span>Households on platform</span><b>1,240</b></div>
+        <div class="qrow"><span>Custodians connected</span><b>6</b></div>
+        <div class="qrow"><span>Median proposal review</span><b>3m 12s</b></div>
+        <div class="qrow"><span>Proposals edited before approval</span><b>22%</b></div>
+        <div class="qrow"><span>Time to first live household</span><b>4 weeks</b></div>
+      </div>
+    </figure>
+
+    <p class="note">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6.2v4M7 4.1v.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Meridian is a fictional product built for this page. Every household, holding,
+      figure, quotation and outcome above is synthetic sample data — placeholders for
+      real measurements, not claims about a shipping system.
+    </p>
+  </div>
+</section>
+
+<!-- ══ CTA ════════════════════════════════════════════════ -->
+<section class="cta dark" id="demo">
+  <div class="cta__glow" aria-hidden="true"></div>
+  <div class="wrap cta__in">
+    <div>
+      <span class="ul">06 / Next</span>
+      <h2 data-split-reveal>See it run on your own book.</h2>
+      <div class="cta__acts">
+        <a class="btn btn--solid" href="#demo">Book a demo <svg class="btn__arrow" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn--ghost" href="#proof">Read the security brief</a>
+      </div>
+    </div>
+    <div>
+      <p data-reveal>
+        Forty-five minutes, your investment policy statement, one real household.
+        We compile the mandate live and show you the proposal it builds — and
+        every reason behind it.
+      </p>
+      <div class="cta__list" data-reveal-group>
+        <span data-reveal><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.3 5.6 10.4 11.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>45-minute working session, not a slide deck</span>
+        <span data-reveal><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.3 5.6 10.4 11.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Your IPS compiled into rules, on the call</span>
+        <span data-reveal><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.3 5.6 10.4 11.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Read-only custody access, revoked after</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ footer ═════════════════════════════════════════════ -->
+<footer class="foot dark">
+  <div class="wrap">
+    <div class="foot__in">
+      <div class="foot__brand">
+        <a class="nav__mark" href="#top">
+          <svg class="nav__glyph" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M1 8h14M8 1c2.6 2.2 2.6 11.8 0 14M8 1C5.4 3.2 5.4 12.8 8 15" stroke="currentColor" stroke-width="1.1" opacity=".5"/>
+            <circle cx="8" cy="8" r="2" fill="#4C68F0"/>
+          </svg>
+          Meridian
+        </a>
+        <p>An AI wealth manager that drafts the rebalance and defends it — while the advisor keeps the signature.</p>
+      </div>
+      <div class="foot__col"><b class="ul">Product</b><a href="#mechanism">Mechanism</a><a href="#platform">Platform</a><a href="#coverage">Coverage</a><a href="#proof">Proof</a></div>
+      <div class="foot__col"><b class="ul">Company</b><a href="#top">About</a><a href="#top">Careers</a><a href="#top">Press</a></div>
+      <div class="foot__col"><b class="ul">Trust</b><a href="#top">Security</a><a href="#top">Sub-processors</a><a href="#top">Disclosures</a></div>
+    </div>
+    <div class="foot__base">
+      <p>© 2026 Meridian — a fictional product built as a front-end demonstration. Nothing here is investment advice, and no figure on this page describes a real firm, portfolio or outcome.</p>
+      <p class="ul">Built with GSAP · Lenis · Three.js</p>
+    </div>
+  </div>
+</footer>
+
+<script src="./vendor/lenis.min.js"></script>
+<script src="./vendor/gsap.min.js"></script>
+<script src="./vendor/ScrollTrigger.min.js"></script>
+<script type="module" src="./js/main.js"></script>
+
+</body>
+</html>

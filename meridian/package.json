@@ -1,0 +1,17 @@
+{
+  "name": "threejs-hero",
+  "version": "1.0.0",
+  "description": "Full-screen landing hero: a slowly rotating object under soft studio lighting, with a camera dolly driven by scroll position.",
+  "main": "hero.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "three": "^0.185.1"
+  }
+}

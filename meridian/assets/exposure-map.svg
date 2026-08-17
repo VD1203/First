@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img">
+  <title>Sector exposure map — 15 sleeves sized by portfolio weight, coloured by trailing quarter return</title>
+
+  <defs>
+    <style>
+      .n { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 600; letter-spacing: -0.01em; }
+      .m { font-family: Menlo, Monaco, "Courier New", monospace; font-weight: 400; letter-spacing: 0.06em; }
+      .d  { fill: #F2F4F3; }        /* text on dark tiles  */
+      .l  { fill: #14181B; }        /* text on light tiles */
+      .dq { fill: #F2F4F3; fill-opacity: .62; }
+      .lq { fill: #14181B; fill-opacity: .55; }
+    </style>
+  </defs>
+
+  <!-- grout -->
+  <rect width="1600" height="1000" fill="#0A0C10"/>
+
+  <!-- ── column A ─────────────────────────────────────────── -->
+  <g>
+    <rect x="4"   y="4"   width="552" height="512" fill="#2E9078"/>
+    <text class="n d"  x="32" y="60"  font-size="34">US Large Cap</text>
+    <text class="m dq" x="32" y="90"  font-size="17">EQ · CORE · 412 HOLDINGS</text>
+    <text class="n d"  x="32" y="486" font-size="72">22.0%</text>
+    <text class="m d"  x="524" y="486" font-size="26" text-anchor="end">+2.4</text>
+  </g>
+  <g>
+    <rect x="4"   y="524" width="272" height="472" fill="#D3937C"/>
+    <text class="n l"  x="28" y="56"  font-size="24" transform="translate(0,524)">US Small Cap</text>
+    <text class="m lq" x="28" y="82"  font-size="14" transform="translate(0,524)">EQ · SATELLITE</text>
+    <text class="n l"  x="28" y="446" font-size="46" transform="translate(0,524)">5.1%</text>
+    <text class="m l"  x="248" y="446" font-size="20" text-anchor="end" transform="translate(0,524)">−1.2</text>
+  </g>
+  <g>
+    <rect x="284" y="524" width="272" height="472" fill="#8AC4B2"/>
+    <text class="n l"  x="308" y="580" font-size="24">US Mid Cap</text>
+    <text class="m lq" x="308" y="606" font-size="14">EQ · SATELLITE</text>
+    <text class="n l"  x="308" y="970" font-size="46">4.4%</text>
+    <text class="m l"  x="528" y="970" font-size="20" text-anchor="end">+0.8</text>
+  </g>
+
+  <!-- ── column B ─────────────────────────────────────────── -->
+  <g>
+    <rect x="564" y="4"   width="432" height="352" fill="#17836A"/>
+    <text class="n d"  x="588" y="60"  font-size="28">Intl Developed</text>
+    <text class="m dq" x="588" y="88"  font-size="15">EQ · EX-US · HEDGED 40%</text>
+    <text class="n d"  x="588" y="330" font-size="54">12.8%</text>
+    <text class="m d"  x="964" y="330" font-size="22" text-anchor="end">+3.1</text>
+  </g>
+  <g>
+    <rect x="564" y="364" width="432" height="292" fill="#C26B4E"/>
+    <text class="n d"  x="588" y="420" font-size="28">Emerging Markets</text>
+    <text class="m dq" x="588" y="448" font-size="15">EQ · UNDERWEIGHT</text>
+    <text class="n d"  x="588" y="630" font-size="54">7.2%</text>
+    <text class="m d"  x="964" y="630" font-size="22" text-anchor="end">−2.6</text>
+  </g>
+  <g>
+    <rect x="564" y="664" width="432" height="332" fill="#B0D5C9"/>
+    <text class="n l"  x="588" y="720" font-size="28">Global REITs</text>
+    <text class="m lq" x="588" y="748" font-size="15">REAL ASSETS</text>
+    <text class="n l"  x="588" y="970" font-size="54">5.9%</text>
+    <text class="m l"  x="964" y="970" font-size="22" text-anchor="end">+0.4</text>
+  </g>
+
+  <!-- ── column C ─────────────────────────────────────────── -->
+  <g>
+    <rect x="1004" y="4"   width="302" height="292" fill="#9ECDBE"/>
+    <text class="n l"  x="1028" y="56"  font-size="24">IG Corporate</text>
+    <text class="m lq" x="1028" y="82"  font-size="14">FI · DUR 6.1</text>
+    <text class="n l"  x="1028" y="270" font-size="42">9.4%</text>
+    <text class="m l"  x="1282" y="270" font-size="19" text-anchor="end">+0.6</text>
+  </g>
+  <g>
+    <rect x="1004" y="304" width="302" height="272" fill="#6FB6A2"/>
+    <text class="n l"  x="1028" y="356" font-size="24">Treasuries</text>
+    <text class="m lq" x="1028" y="382" font-size="14">FI · LADDERED</text>
+    <text class="n l"  x="1028" y="550" font-size="42">8.1%</text>
+    <text class="m l"  x="1282" y="550" font-size="19" text-anchor="end">+1.1</text>
+  </g>
+  <g>
+    <rect x="1004" y="584" width="302" height="232" fill="#BCDAD1"/>
+    <text class="n l"  x="1028" y="636" font-size="24">Municipals</text>
+    <text class="m lq" x="1028" y="662" font-size="14">FI · TAX-EXEMPT</text>
+    <text class="n l"  x="1028" y="790" font-size="42">6.7%</text>
+    <text class="m l"  x="1282" y="790" font-size="19" text-anchor="end">+0.3</text>
+  </g>
+  <g>
+    <rect x="1004" y="824" width="302" height="172" fill="#DCA893"/>
+    <text class="n l"  x="1028" y="874" font-size="22">High Yield</text>
+    <text class="n l"  x="1028" y="970" font-size="36">3.8%</text>
+    <text class="m l"  x="1282" y="970" font-size="18" text-anchor="end">−0.9</text>
+  </g>
+
+  <!-- ── column D ─────────────────────────────────────────── -->
+  <g>
+    <rect x="1314" y="4"   width="282" height="252" fill="#46A08A"/>
+    <text class="n d"  x="1338" y="54"  font-size="22">Private Credit</text>
+    <text class="m dq" x="1338" y="79"  font-size="13">ALT · LOCKED 24M</text>
+    <text class="n d"  x="1338" y="230" font-size="38">4.4%</text>
+    <text class="m d"  x="1572" y="230" font-size="18" text-anchor="end">+1.7</text>
+  </g>
+  <g>
+    <rect x="1314" y="264" width="282" height="212" fill="#B4432B"/>
+    <text class="n d"  x="1338" y="314" font-size="22">Commodities</text>
+    <text class="m dq" x="1338" y="339" font-size="13">ALT · BROAD</text>
+    <text class="n d"  x="1338" y="450" font-size="38">2.9%</text>
+    <text class="m d"  x="1572" y="450" font-size="18" text-anchor="end">−3.4</text>
+  </g>
+  <g>
+    <rect x="1314" y="484" width="282" height="202" fill="#7FBEAB"/>
+    <text class="n l"  x="1338" y="534" font-size="22">Infrastructure</text>
+    <text class="m lq" x="1338" y="559" font-size="13">ALT · LISTED</text>
+    <text class="n l"  x="1338" y="660" font-size="38">2.2%</text>
+    <text class="m l"  x="1572" y="660" font-size="18" text-anchor="end">+0.9</text>
+  </g>
+  <g>
+    <rect x="1314" y="694" width="282" height="162" fill="#0B6E55"/>
+    <text class="n d"  x="1338" y="742" font-size="22">Gold</text>
+    <text class="n d"  x="1338" y="830" font-size="34">1.4%</text>
+    <text class="m d"  x="1572" y="830" font-size="18" text-anchor="end">+5.2</text>
+  </g>
+  <g>
+    <rect x="1314" y="864" width="282" height="132" fill="#CFCDC4"/>
+    <text class="n l"  x="1338" y="908" font-size="22">Cash</text>
+    <text class="n l"  x="1338" y="970" font-size="32">3.7%</text>
+    <text class="m l"  x="1572" y="970" font-size="18" text-anchor="end">0.0</text>
+  </g>
+</svg>
