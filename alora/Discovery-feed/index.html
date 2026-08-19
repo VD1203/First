@@ -221,6 +221,9 @@ body{
 .quota.hide{opacity:0;transform:translateY(-14px);pointer-events:none}
 .scrollcue{position:absolute;left:0;right:0;top:646px;z-index:3;display:flex;
   justify-content:center;pointer-events:none}
+/* clickable only while the viewer is open — an inline pointer-events:auto
+   here outlived the closed viewer and swallowed drags on the card CTA */
+.reveal.on .scrollcue{pointer-events:auto}
 .scrollcue span{padding:10px 20px;border-radius:100px;background:rgba(60,64,72,.72);
   color:#fff;font-size:15px;font-weight:400;line-height:20px;
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
@@ -1957,7 +1960,6 @@ function closeSheet(){
   const up = () => { if (s && s.moved > 56) openSheet(); s = null; };
   rvPhoto.addEventListener('pointerup', up);
   rvPhoto.addEventListener('pointercancel', up);
-  document.querySelector('.scrollcue').style.pointerEvents = 'auto';
   document.querySelector('.scrollcue').addEventListener('click', openSheet);
 })();
 
