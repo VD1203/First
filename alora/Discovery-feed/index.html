@@ -18,6 +18,7 @@
   --ease-out:cubic-bezier(.16,1,.3,1);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}   /* our display:flex rules would win otherwise */
 html,body{height:100%}
 body{
   background:#e8e9eb;
@@ -453,6 +454,103 @@ body{
   box-sizing:border-box;padding:16px;background:#fff}
 
 
+/* ── Save: the card folds like a letter and tucks into the tab ──
+   Two clipped clones of the real card stacked as halves; the top half
+   rotates down onto the bottom, then the folded pair flies to the Save
+   tab. Reuses the card's own DOM so it always matches what was on screen. */
+.foldcard{position:absolute;z-index:12;pointer-events:none;
+  transform-origin:50% 50%;will-change:transform,opacity;
+  filter:drop-shadow(0 16px 34px rgba(9,26,52,.28))}
+/* the flap rotates; a separate child does the clipping. overflow:hidden on
+   the rotating element itself flattens its subtree, which stops each face
+   from hiding independently. */
+.fc-half{position:absolute;left:0;width:100%;transform-style:preserve-3d}
+.fc-top{top:0;transform-origin:50% 100%}
+.fc-bot{bottom:0}
+.fc-clip{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden}
+.fc-inner{position:absolute;left:0;width:100%}
+/* the reverse of the folded flap — a blank card back, like a closed letter */
+.fc-back{position:absolute;inset:0;background:#FDFDFD;border:1px solid var(--line);
+  border-radius:0 0 14px 14px;transform:rotateX(180deg);backface-visibility:hidden;
+  display:grid;place-items:center}
+.fc-back svg{width:26px;height:24px;opacity:.5}
+/* the tab reacting as it lands */
+@keyframes tabtuck{
+  0%{transform:none}
+  40%{transform:translateY(3px) scale(.9)}
+  100%{transform:none}
+}
+.tab.tucked svg{animation:tabtuck .34s var(--ease-out)}
+
+/* ── Shortlisted Profiles (5529:18843 / 5367:11737) ───── */
+.sc-save{position:absolute;inset:0;z-index:6;background:#fff;
+  display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(100%);opacity:0;pointer-events:none;will-change:transform}
+.sc-save.anim{transition:transform .46s var(--ease-out),opacity .26s ease}
+.sc-save.on{transform:none;opacity:1;pointer-events:auto}
+.sl-head{flex:none;height:106px;background:#fff;position:relative}
+.sl-head .back{position:absolute;left:16px;top:63px;width:24px;height:24px;
+  border:none;background:none;padding:0;cursor:pointer}
+.sl-head .back svg{width:24px;height:24px;display:block}
+.sl-head h2{position:absolute;left:16px;right:16px;top:60px;height:30px;
+  font-size:20px;font-weight:500;line-height:30px;color:#252B37;text-align:center}
+/* filter chips */
+.sl-chips{flex:none;display:flex;gap:8px;padding:24px 16px 0;overflow-x:auto;
+  scrollbar-width:none}
+.sl-chips::-webkit-scrollbar{display:none}
+.sl-chip{flex:none;height:40px;padding:8px 16px;box-sizing:border-box;border-radius:16px;
+  background:#FDFDFD;border:1px solid var(--line);font-family:inherit;
+  font-size:16px;font-weight:500;line-height:24px;color:#181D27;cursor:pointer;
+  transition:background .18s,color .18s,border-color .18s}
+.sl-chip.on{background:#252B37;border-color:#252B37;color:#FDFDFD}
+.sl-list{flex:1;min-height:0;overflow-y:auto;padding:20px 16px 118px;
+  display:flex;flex-direction:column;gap:20px;scrollbar-width:none}
+.sl-list::-webkit-scrollbar{display:none}
+/* card */
+.sl-card{flex:none;border-radius:16px;background:#535862;overflow:hidden}
+.sl-pick{height:28px;padding:4px 12px;box-sizing:border-box;display:flex;align-items:center;
+  font-size:14px;line-height:20px;color:#FDFDFD}
+.sl-pick u{text-decoration:none;border-bottom:1px solid rgba(255,255,255,.7);
+  margin-left:4px;cursor:pointer}
+.sl-body{background:#FDFDFD;border:1px solid var(--line);box-sizing:border-box;
+  padding:16px;display:flex;flex-direction:column;gap:24px}
+.sl-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sl-name{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:400;
+  color:var(--ink);line-height:32px}
+.sl-name svg{width:20px;height:20px}
+.sl-bio{font-size:16px;font-weight:400;line-height:24px;color:#181D27;text-align:center;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.sl-view{height:40px;border-radius:100px;background:#fff;border:1px solid var(--line);
+  font-family:inherit;font-size:16px;font-weight:500;color:var(--ink);cursor:pointer}
+.sl-foot{height:48px;background:#FDFDFD;border:1px solid #E5E5E5;border-top:none;
+  box-sizing:border-box;padding:12px;display:flex;align-items:center;gap:12px;
+  font-size:16px;color:#535862;line-height:24px}
+.sl-mutual{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;
+  border-radius:16px;background:#fff;border:1px solid var(--line);
+  font-size:14px;color:var(--ink)}
+.sl-mutual svg{width:14px;height:14px}
+.sl-heart{margin-left:auto;width:24px;height:24px;border:none;background:none;
+  padding:0;cursor:pointer;display:grid;place-items:center}
+.sl-heart svg{width:22px;height:20px}
+/* tooltip on the +N */
+.sl-tip{position:absolute;z-index:3;background:#414651;color:#fff;border-radius:8px;
+  padding:8px 12px;font-size:14px;line-height:18px;white-space:nowrap;
+  opacity:0;pointer-events:none;transform:translateY(-4px);
+  transition:opacity .2s ease,transform .2s var(--ease-out)}
+.sl-tip.on{opacity:1;transform:none}
+/* empty state */
+.sl-empty{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-end;padding:0 16px 134px;text-align:center}
+.sl-empty .ico{margin-bottom:120px}
+.sl-empty .ico svg{width:24px;height:24px}
+.sl-empty h3{font-size:20px;font-weight:700;line-height:30px;color:#414651}
+.sl-empty p{margin-top:8px;font-size:16px;line-height:24px;color:#414651}
+.sl-empty .row{display:flex;gap:8px;margin-top:24px;width:358px}
+.sl-empty .row button{flex:1;height:44px;border-radius:100px;font-family:inherit;
+  font-size:16px;font-weight:600;line-height:24px;cursor:pointer}
+.sl-explore{background:#fff;border:1px solid var(--line);color:#414651}
+.sl-invite{background:#252B37;border:1px solid #252B37;color:#fff}
+
 /* ── Kebab menu (5272:3563) — 202x88 white r12, rows 190x36 ─ */
 .kmenu{position:absolute;right:20px;top:178px;width:202px;z-index:9;
   background:#fff;border-radius:12px;padding:6px;box-sizing:border-box;
@@ -745,6 +843,28 @@ body{
     </div>
   </section>
 
+  <!-- ══ SCREEN 4 — SHORTLISTED PROFILES ═══════════════ -->
+  <section class="screen sc-save" id="saveScreen">
+    <div class="sl-head">
+      <button class="back" id="slBack">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#252B37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <h2>Shortlisted Profiles</h2>
+    </div>
+    <div class="sl-chips" id="slChips"></div>
+    <div class="sl-list" id="slList"></div>
+    <div class="sl-empty" id="slEmpty" hidden>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="3" stroke="#374957" stroke-width="1.6"/><circle cx="15.5" cy="9.5" r="1.4" fill="#374957"/><path d="M4 16.5 9 12l4 3.5 2.5-2 4.5 4" stroke="#374957" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+      <h3>Nothing caught your eye yet?</h3>
+      <p>Save profiles you're curious about, or ask someone you trust to help you find a match.</p>
+      <div class="row">
+        <button class="sl-explore" id="slExplore">Explore Profiles</button>
+        <button class="sl-invite">Invite Matchmaker</button>
+      </div>
+    </div>
+    <div class="sl-tip" id="slTip"></div>
+  </section>
+
   <!-- ══ Kebab menu ════════════════════════════════════ -->
   <div class="kmenu" id="kmenu">
     <button id="kNot">
@@ -1018,6 +1138,7 @@ let t0 = performance.now(), running = true;
 function tick(now){
   const t = (now - t0)/1000;
   for (const n of nodes){
+    if (n.gone) continue;
     const p = n.p;
     const off = p.amp ? Math.sin((t/p.per)*Math.PI*2 + p.phase) * p.amp : 0;
     const pos = nodePos(p, off, t*0.34);
@@ -1149,9 +1270,15 @@ const cards = PROFILES.map((p, i) => {
   return el;
 });
 
-let pos = 0;                     // fractional carousel position
+let pos = 0;                     // fractional position within `live`, not a profile id
 let target = 0;
-const MAX = PROFILES.length - 1;
+/* Saving takes a profile out of discovery, so the deck works off a live
+   list and `pos` indexes that. curIdx() maps back to the profile. */
+const gone = new Set();
+let live = PROFILES.map((_,i) => i);
+let MAX = live.length - 1;
+const curIdx = () => live.length ? live[Math.max(0, Math.min(MAX, Math.round(pos)))] : 0;
+const slotOfIdx = i => live.indexOf(i);
 
 /* how much of the deck is currently revealed — driven by the zoom
    transition so cards arrive on the arc as the card view resolves */
@@ -1159,8 +1286,10 @@ let fadeActive = 1, fadeOthers = 1;
 
 function layout(){
   const act = Math.round(pos);
-  for (let i = 0; i <= MAX; i++){
-    const d = i - pos, ad = Math.abs(d);
+  cards.forEach((el,i) => { if (gone.has(i)){ el.style.opacity = 0; el.style.pointerEvents = 'none'; } });
+  for (let s = 0; s <= MAX; s++){
+    const i = live[s];
+    const d = s - pos, ad = Math.abs(d);
     const el = cards[i];
     if (ad > 2.6){ el.style.opacity = 0; el.style.pointerEvents = 'none'; continue; }
     const th = d * STEP * RAD;
@@ -1168,7 +1297,7 @@ function layout(){
     const y  = -R*(1 - Math.cos(th));
     const rot = d * STEP * 0.34;                 // damped tilt — a wheel, not a windmill
     const sc  = Math.max(0.74, 1 - ad*0.10);
-    const op  = Math.max(0, 1 - ad*0.6) * (i === act ? fadeActive : fadeOthers);
+    const op  = Math.max(0, 1 - ad*0.6) * (s === act ? fadeActive : fadeOthers);
     el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
     el.style.opacity = op.toFixed(3);
     el.style.zIndex = 100 - Math.round(ad*10);
@@ -1189,11 +1318,12 @@ function go(n){
   target = Math.max(0, Math.min(MAX, n));
   /* the carousel is the constellation seen up close — so moving along it
      also moves which avatar we'd collapse back into on zoom-out */
-  if (focus !== null && target !== focus){
+  const tIdx = live.length ? live[Math.max(0, Math.min(MAX, Math.round(target)))] : 0;
+  if (focus !== null && tIdx !== focus){
     nodes[focus].el.style.opacity = '';        // un-hide the one we're leaving
     clearAssembly(focus);
-    focus = target;
-    morphImg.style.backgroundImage = nodes[target].p.img;
+    focus = tIdx;
+    morphImg.style.backgroundImage = nodes[tIdx].p.img;
     setProgress(prog);                         // re-anchor the view on the new profile
   }
   if (!raf) raf = requestAnimationFrame(settle);
@@ -1227,7 +1357,7 @@ DECK.addEventListener('pointermove', e => {
   } else if (drag.axis === 'y' && dy < 0){
     const k = Math.min(1, -dy/120);
     hint.style.opacity = 1-k;
-    cards[Math.round(pos)].style.filter = `brightness(${1-k*0.06})`;
+    cards[curIdx()].style.filter = `brightness(${1-k*0.06})`;
   }
 });
 function endDrag(){
@@ -1251,7 +1381,7 @@ DECK.addEventListener('pointerup', e => {
   if (drag && drag.axis === null && drag.moved < 8){
     /* tap on a side card brings it to front; tap on centre reveals photo */
     const c = e.target.closest('.card');
-    if (c){ const i = +c.dataset.i; if (i !== Math.round(pos)) go(i); }
+    if (c){ const i = +c.dataset.i; if (i !== curIdx()) go(slotOfIdx(i)); }
   }
   endDrag();
 });
@@ -1314,6 +1444,7 @@ function nodeRect(n){
 function pickFocus(ax, ay){
   let best = null, bd = 135;
   for (const n of nodes){
+    if (n.gone) continue;
     const r = nodeRect(n);
     const d = Math.hypot(r.x + r.w/2 - ax, r.y + r.h/2 - ay);
     if (d < bd){ bd = d; best = n.i; }
@@ -1330,7 +1461,7 @@ function setFocus(i){
      way out returns you precisely here */
   viewBefore = {s:view.s, x:view.x, y:view.y};
   morphImg.style.backgroundImage = nodes[i].p.img;
-  pos = target = i;
+  pos = target = Math.max(0, slotOfIdx(i));
   setProgress(0);
 }
 
@@ -1395,7 +1526,7 @@ function setProgress(p){
   morphImg.style.filter = `blur(${(15*pFly).toFixed(2)}px) ` +
     `brightness(${(1 + 0.10*pFly).toFixed(3)}) saturate(${(1 + 0.15*pFly).toFixed(3)})`;
 
-  n.el.style.opacity   = p > 0.015 ? 0 : '';
+  n.el.style.opacity   = n.gone ? '0' : (p > 0.015 ? 0 : '');
   wrap.style.opacity   = 1 - ramp(p, 0.02, 0.42);
   scDisc.style.opacity = 1 - ramp(p, 0.05, 0.40);
   scCard.style.opacity = ramp(p, 0.46, 0.72);
@@ -1689,7 +1820,7 @@ rvCanvas.addEventListener('pointermove', e => {
 }));
 
 function openReveal(){
-  const i = Math.round(pos), p = PROFILES[i];
+  const i = curIdx(), p = PROFILES[i];
   rvIdx = i; shot = 0;
 
   strip.innerHTML = '';
@@ -1893,7 +2024,7 @@ function buildDetail(i){
   wireRevealCard();
   fitNotes();
   wireSwipeCta(detail.querySelector('.btn-interest'),
-               () => openSI(sheetOpen ? rvIdx : Math.round(pos)));
+               () => openSI(sheetOpen ? rvIdx : curIdx()));
 }
 
 /* Sticky-note behaviour: grow the body text until it just fills the card's
@@ -2065,8 +2196,225 @@ function wireSwipeCta(btn, onDone){
 
 function resetSwipeCtas(){ swipeCtas.forEach(c => { c.ease(true); c.paint(0); }); }
 
-wireSwipeCta(ib, () => openSI(Math.round(pos)));
+wireSwipeCta(ib, () => openSI(curIdx()));
 wireSwipeCta(document.getElementById('viewerCta'), () => openSI(rvIdx));
+
+/* saving takes the profile out of discovery: the orbit avatar fades and
+   the deck closes the gap behind it */
+function removeFromDiscover(i){
+  if (gone.has(i)) return;
+  gone.add(i);
+  const slot = live.indexOf(i);
+  live = live.filter(x => x !== i);
+  MAX = live.length - 1;
+
+  const n = nodes[i];
+  n.el.style.transition = 'opacity .34s ease, transform .34s var(--ease-out)';
+  n.el.style.opacity = '0';
+  n.gone = true;                       // tick() stops moving it, taps ignore it
+
+  if (live.length){
+    const t = Math.max(0, Math.min(MAX, slot > MAX ? MAX : slot));
+    pos = target = t;
+    if (focus !== null) focus = live[t];
+  }
+  layout();
+}
+
+/* fold the card like a letter and tuck it into the Save tab (~450ms) */
+const FOLD_MARK = `<svg viewBox="0 0 26 24" fill="none"><path d="M13 22S2 15.2 2 8.2C2 4.2 5 1.5 8.4 1.5c2.1 0 4 1.2 4.6 2.8.6-1.6 2.5-2.8 4.6-2.8C21 1.5 24 4.2 24 8.2 24 15.2 13 22 13 22Z" stroke="#181D27" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+
+function foldCardToSave(cardEl){
+  if (!cardEl) return;
+  const ph = phone.getBoundingClientRect();
+  const r  = cardEl.getBoundingClientRect();
+  const px = v => v/stageScale;
+  const x = px(r.left - ph.left), y = px(r.top - ph.top);
+  const w = px(r.width), hh = px(r.height), half = hh/2;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'foldcard';
+  wrap.style.cssText = `left:${x}px;top:${y}px;width:${w}px;height:${hh}px;perspective:1100px`;
+
+  /* two clipped copies of the real card, so the fold shows the actual content */
+  const mk = (cls, innerTop) => {
+    const half_ = document.createElement('div');
+    half_.className = 'fc-half ' + cls;
+    half_.style.height = (half + (cls === 'fc-top' ? .5 : 0)) + 'px';
+    const clip = document.createElement('div');
+    clip.className = 'fc-clip';
+    const inner = document.createElement('div');
+    inner.className = 'fc-inner';
+    inner.style.top = innerTop + 'px';
+    inner.style.height = hh + 'px';
+    inner.appendChild(cardEl.cloneNode(true));
+    inner.firstChild.style.cssText += ';position:static;width:'+w+'px;height:'+hh+'px;transform:none;opacity:1;filter:none';
+    clip.appendChild(inner);
+    half_.appendChild(clip);
+    return half_;
+  };
+  const top = mk('fc-top', 0), bot = mk('fc-bot', -half);
+  const back = document.createElement('div');
+  back.className = 'fc-back';
+  back.innerHTML = FOLD_MARK;
+  top.appendChild(back);
+  wrap.appendChild(bot); wrap.appendChild(top);
+  phone.appendChild(wrap);
+  cardEl.style.visibility = 'hidden';   /* else the flap just uncovers the real card */
+
+  /* where it's going: the Save tab glyph on whichever nav is showing */
+  const bar = [...document.querySelectorAll('.tabbar')]
+    .find(b => b.getBoundingClientRect().width > 0) || document.querySelector('.tabbar');
+  const tab = bar.children[3];
+  const t = tab.getBoundingClientRect();
+  const tx = px(t.left - ph.left) + px(t.width)/2;
+  const ty = px(t.top  - ph.top)  + 12;
+
+  const EASE = 'cubic-bezier(.4,0,.2,1)';
+  /* 1. fold the top flap down onto the bottom half */
+  top.animate([{transform:'rotateX(0deg)'},{transform:'rotateX(-180deg)'}],
+              {duration:190, easing:EASE, fill:'forwards'});
+
+  /* 2. the folded pair arcs into the tab and shrinks away */
+  const dx = tx - (x + w/2), dy = ty - (y + hh*0.75);
+  wrap.animate([
+    {transform:'translate(0,0) scale(1)', opacity:1, offset:0},
+    {transform:`translate(${dx*0.45}px,${dy*0.3 - 26}px) scale(.62)`, opacity:1, offset:.55},
+    {transform:`translate(${dx}px,${dy}px) scale(.12)`, opacity:0, offset:1}
+  ], {duration:300, delay:150, easing:EASE, fill:'forwards'});
+
+  tab.classList.remove('tucked');
+  setTimeout(() => tab.classList.add('tucked'), 400);
+  setTimeout(() => { wrap.remove(); tab.classList.remove('tucked');
+                     cardEl.style.visibility = ''; }, 900);
+  setTimeout(() => removeFromDiscover(+cardEl.dataset.i), 470);
+}
+
+/* ══════════════════════════════════════════════════════
+   12. Shortlisted Profiles (5529:18843 / 5367:11737)
+   ══════════════════════════════════════════════════════ */
+const saveScreen = document.getElementById('saveScreen');
+const slList = document.getElementById('slList');
+const slChips = document.getElementById('slChips');
+const slEmpty = document.getElementById('slEmpty');
+const slTip = document.getElementById('slTip');
+/* this screen sits above the other two, so it carries its own copy of the nav */
+saveScreen.appendChild(document.querySelector('.sc-discovery .tabwrap').cloneNode(true));
+
+/* who put each profile on the list — "You" plus the matchmakers */
+const PICKERS = [
+  ['Maya','Aditya','Aditi','Riya'], ['You'], ['Maya','Riya'], ['You'],
+  ['Aditya'], ['You','Maya'], ['Riya','Aditi'],
+];
+const MATCHMAKERS = ['Maya','Aditya','Riya'];
+const saved = new Set();
+let slFilter = 'All';
+
+const HEART_FILL = `<svg viewBox="0 0 24 22" fill="none"><path d="M12 21S1.5 14.6 1.5 7.9C1.5 4.1 4.3 1.5 7.5 1.5c2 0 3.8 1.1 4.5 2.6.7-1.5 2.5-2.6 4.5-2.6 3.2 0 6 2.6 6 6.4C22.5 14.6 12 21 12 21Z" fill="#181D27"/></svg>`;
+const HEART_LINE = `<svg viewBox="0 0 24 22" fill="none"><path d="M12 21S1.5 14.6 1.5 7.9C1.5 4.1 4.3 1.5 7.5 1.5c2 0 3.8 1.1 4.5 2.6.7-1.5 2.5-2.6 4.5-2.6 3.2 0 6 2.6 6 6.4C22.5 14.6 12 21 12 21Z" stroke="#181D27" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+const USERS_SM = `<svg viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5.2" r="2.4" stroke="#181D27" stroke-width="1.2"/><path d="M1.8 13c0-2.1 1.9-3.5 4.2-3.5s4.2 1.4 4.2 3.5" stroke="#181D27" stroke-width="1.2" stroke-linecap="round"/><path d="M11.2 3.2a2.3 2.3 0 0 1 0 4.3M12.3 9.7c1.2.5 2 1.5 2 2.9" stroke="#181D27" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+
+function slSources(){
+  const s = new Set(['All','By You']);
+  saved.forEach(i => PICKERS[i].forEach(n => { if (n !== 'You') s.add(n); }));
+  return [...s];
+}
+function slMatches(i){
+  if (slFilter === 'All') return true;
+  if (slFilter === 'By You') return PICKERS[i].includes('You');
+  return PICKERS[i].includes(slFilter);
+}
+
+function renderShortlist(){
+  const ids = [...saved].filter(slMatches);
+  const any = saved.size > 0;
+  slEmpty.hidden = any;
+  slChips.hidden = !any;
+  slList.hidden = !any;
+  if (!any) return;
+
+  slChips.innerHTML = slSources()
+    .map(n => `<button class="sl-chip${n===slFilter?' on':''}" data-f="${n}">${n}</button>`).join('');
+
+  slList.innerHTML = ids.map(i => {
+    const p = PROFILES[i];
+    const by = PICKERS[i].filter(n => n !== 'You');
+    const shown = by.slice(0,2), rest = by.slice(2);
+    const banner = by.length ? `<div class="sl-pick">Picked by ${shown.join(', ')}` +
+      (rest.length ? `<u data-more="${rest.join(', ')}">+${rest.length}</u>` : '') + `</div>` : '';
+    return `<article class="sl-card" data-i="${i}">
+      ${banner}
+      <div class="sl-body">
+        <div class="sl-top">
+          <span class="sl-name">${p.name}, ${p.age} ${VERIFIED}</span>
+          <span class="compat">${p.compat}% Compatible</span>
+        </div>
+        <p class="sl-bio">${p.bio}</p>
+        <button class="sl-view">View Full Profile</button>
+      </div>
+      <div class="sl-foot">You both know
+        <span class="sl-mutual">${USERS_SM}${p.mutual}</span>
+        <button class="sl-heart" title="Remove from shortlist">${HEART_FILL}</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+slChips.addEventListener('click', e => {
+  const c = e.target.closest('.sl-chip'); if (!c) return;
+  slFilter = c.dataset.f; renderShortlist();
+});
+slList.addEventListener('click', e => {
+  const card = e.target.closest('.sl-card'); if (!card) return;
+  const i = +card.dataset.i;
+  if (e.target.closest('.sl-heart')){ saved.delete(i); renderShortlist(); return; }
+  if (e.target.closest('.sl-view')){ closeSave(); setTimeout(() => openDetailDirect(i), 260); return; }
+  const more = e.target.closest('[data-more]');
+  if (more){
+    const r = more.getBoundingClientRect(), s = saveScreen.getBoundingClientRect();
+    slTip.textContent = more.dataset.more;
+    slTip.style.left = ((r.left - s.left)/stageScale - 20) + 'px';
+    slTip.style.top  = ((r.bottom - s.top)/stageScale + 8) + 'px';
+    slTip.classList.add('on');
+    clearTimeout(slTip._t); slTip._t = setTimeout(() => slTip.classList.remove('on'), 4000);
+  }
+});
+
+function openSave(){
+  renderShortlist();
+  saveScreen.classList.add('anim');
+  void saveScreen.offsetHeight;
+  saveScreen.classList.add('on');
+  document.querySelectorAll('.tabbar').forEach(bar => {
+    [...bar.children].forEach((t,k) => t.classList.toggle('on', k === 3));
+  });
+}
+function closeSave(){
+  saveScreen.classList.add('anim');
+  saveScreen.classList.remove('on');
+  document.querySelectorAll('.tabbar').forEach(bar => {
+    [...bar.children].forEach((t,k) => t.classList.toggle('on', k === 0));
+  });
+}
+document.getElementById('slBack').addEventListener('click', closeSave);
+document.getElementById('slExplore').addEventListener('click', closeSave);
+
+/* the Save tab on every nav opens it; Discover returns */
+document.querySelectorAll('.tabbar').forEach(bar => {
+  bar.addEventListener('click', e => {
+    const t = e.target.closest('.tab'); if (!t) return;
+    const k = [...bar.children].indexOf(t);
+    if (k === 3) openSave();
+    else if (k === 0) closeSave();
+  });
+});
+
+/* Save buttons on the listing card and the photo viewer */
+function saveProfile(i){
+  if (saved.has(i)) return;
+  saved.add(i);
+  showToast('The profile has been added to be revisited later');
+}
 
 /* ══════════════════════════════════════════════════════
    10. Kebab flow — not interested / don't show again
@@ -2205,7 +2553,11 @@ siSend.addEventListener('click', () => {
 document.getElementById('saveBtn').addEventListener('click', function(){
   this.style.background = '#F2F4F7';
   setTimeout(()=> this.style.background = '', 260);
+  const i = curIdx();
+  if (!saved.has(i)) foldCardToSave(cards[i]);
+  saveProfile(i);
 });
+document.querySelector('.rv-actions .btn-save').addEventListener('click', () => saveProfile(rvIdx));
 
 })();
 </script>
